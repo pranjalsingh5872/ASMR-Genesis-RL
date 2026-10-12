@@ -1,0 +1,130 @@
+import os
+import wave
+import numpy as np
+import scipy.signal
+
+SR = 44100
+TOTAL_DURATION = 12.0  # Exactly 720 frames at 60 FPS (12.0 seconds)
+TOTAL_SAMPLES = int(TOTAL_DURATION * SR)
+
+left_channel = np.zeros(TOTAL_SAMPLES, dtype=np.float32)
+right_channel = np.zeros(TOTAL_SAMPLES, dtype=np.float32)
+
+def load_wav(filepath):
+    if not os.path.exists(filepath):
+        print(f"[!] Warning: Audio file not found: {filepath}")
+        return None, None
+    
+    with wave.open(filepath, 'rb') as w:
+        n_ch = w.getnchannels()
+        sampwidth = w.getsampwidth()
+        framerate = w.getframerate()
+        n_frames = w.getnframes()
+        data = w.readframes(n_frames)
+        
+        if sampwidth == 2:
+            samples = np.frombuffer(data, dtype=np.int16).astype(np.float32) / 32768.0
+        else:
+            samples = np.frombuffer(data, dtype=np.uint8).astype(np.float32) / 128.0 - 1.0
+
+        if n_ch == 2:
+            l = samples[0::2]
+            r = samples[1::2]
+        else:
+            l = samples
+            r = samples
+            
+        if framerate != SR:
+            num = int(len(l) * SR / framerate)
+            l = scipy.signal.resample(l, num)
+            r = scipy.signal.resample(r, num)
+            
+        return l, r
+
+def place_sfx(filepath, start_time, volume=1.0, pan=0.0):
+    l, r = load_wav(filepath)
+    if l is None:
+        return
+    
+    start_idx = int(start_time * SR)
+    length = len(l)
+    end_idx = min(TOTAL_SAMPLES, start_idx + length)
+    sfx_len = end_idx - start_idx
+    
+    if sfx_len <= 0 or start_idx >= TOTAL_SAMPLES:
+        return
+    
+    left_gain = volume * (1.0 - max(0.0, pan))
+    right_gain = volume * (1.0 + min(0.0, pan))
+    
+    left_channel[start_idx:end_idx] += l[:sfx_len] * left_gain
+    right_channel[start_idx:end_idx] += r[:sfx_len] * right_gain
+    print(f"[+] SFX Synced: {os.path.basename(filepath)} at {start_time:.3f}s (pan: {pan:+.2f}, vol: {volume:.2f})")
+
+# 1. Warm ASMR Binaural Studio Room Ambience across full 12.0s
+t = np.linspace(0, TOTAL_DURATION, TOTAL_SAMPLES, endpoint=False)
+binaural_l = np.sin(2 * np.pi * 108.0 * t) * 0.025
+binaural_r = np.sin(2 * np.pi * 112.0 * t) * 0.025
+tape_air = (np.random.rand(TOTAL_SAMPLES) - 0.5) * 0.005
+
+left_channel += binaural_l + tape_air
+right_channel += binaural_r + tape_air
+
+# 2. DROP 1: THE FIRST GOLDEN JELLY DROP (0.0s - 3.5s)
+place_sfx("assets/audio/11_suction_pop.wav", 0.20, volume=1.1, pan=-0.1)
+place_sfx("assets/audio/02_glass_slide.wav", 0.33, volume=0.8, pan=-0.1)
+place_sfx("assets/curated_sfx/marble_impact.wav", 0.53, volume=1.3, pan=-0.15)
+place_sfx("assets/audio/07_gelatin_squish.wav", 0.63, volume=1.5, pan=-0.1)
+place_sfx("assets/curated_sfx/slime_squish.wav", 0.65, volume=1.2, pan=-0.05)
+place_sfx("assets/curated_sfx/slime_stretch.wav", 0.87, volume=0.9, pan=-0.1)
+place_sfx("assets/curated_sfx/rubber_squish.wav", 1.20, volume=1.1, pan=-0.1)
+place_sfx("assets/audio/10_jiggle_wobble.wav", 1.58, volume=1.2, pan=-0.1)
+place_sfx("assets/audio/09_liquid_slump.wav", 2.33, volume=1.0, pan=-0.15)
+
+# 3. DROP 2: THE TWIN IMPACT (3.5s - 7.0s)
+place_sfx("assets/audio/11_suction_pop.wav", 3.70, volume=1.1, pan=0.1)
+place_sfx("assets/audio/02_glass_slide.wav", 3.87, volume=0.8, pan=0.1)
+place_sfx("assets/curated_sfx/marble_impact.wav", 4.08, volume=1.3, pan=0.15)
+place_sfx("assets/audio/07_gelatin_squish.wav", 4.20, volume=1.5, pan=0.1)
+place_sfx("assets/curated_sfx/slime_squish.wav", 4.22, volume=1.2, pan=0.15)
+place_sfx("assets/curated_sfx/slime_stretch.wav", 4.47, volume=0.9, pan=0.1)
+place_sfx("assets/curated_sfx/rubber_squish.wav", 4.83, volume=1.1, pan=0.1)
+place_sfx("assets/audio/10_jiggle_wobble.wav", 5.33, volume=1.3, pan=0.1)
+place_sfx("assets/audio/09_liquid_slump.wav", 6.17, volume=1.0, pan=0.15)
+
+# 4. DROP 3: THE GRAND FINALE TRIPLE CLUSTER (7.0s - 10.0s)
+place_sfx("assets/audio/11_suction_pop.wav", 7.20, volume=1.2, pan=0.0)
+place_sfx("assets/audio/02_glass_slide.wav", 7.37, volume=0.9, pan=0.0)
+place_sfx("assets/curated_sfx/marble_impact.wav", 7.58, volume=1.4, pan=0.0)
+place_sfx("assets/audio/07_gelatin_squish.wav", 7.70, volume=1.6, pan=0.0)
+place_sfx("assets/curated_sfx/slime_squish.wav", 7.72, volume=1.4, pan=0.0)
+place_sfx("assets/curated_sfx/slime_stretch.wav", 7.97, volume=1.0, pan=0.0)
+place_sfx("assets/curated_sfx/rubber_squish.wav", 8.33, volume=1.2, pan=0.0)
+place_sfx("assets/audio/10_jiggle_wobble.wav", 8.83, volume=1.4, pan=0.0)
+place_sfx("assets/audio/09_liquid_slump.wav", 9.67, volume=1.1, pan=0.0)
+
+# 5. Master Normalization & Export
+max_peak = max(np.max(np.abs(left_channel)), np.max(np.abs(right_channel)))
+if max_peak > 0.95:
+    scale = 0.92 / max_peak
+    left_channel *= scale
+    right_channel *= scale
+
+left_int16 = (np.clip(left_channel, -1.0, 1.0) * 32767.0).astype(np.int16)
+right_int16 = (np.clip(right_channel, -1.0, 1.0) * 32767.0).astype(np.int16)
+
+interleaved = np.empty((TOTAL_SAMPLES * 2,), dtype=np.int16)
+interleaved[0::2] = left_int16
+interleaved[1::2] = right_int16
+
+out_dir = os.path.abspath("output/rendered")
+os.makedirs(out_dir, exist_ok=True)
+out_wav = os.path.join(out_dir, "cloth_jelly_12s_60fps_foley.wav")
+
+with wave.open(out_wav, 'wb') as w:
+    w.setnchannels(2)
+    w.setsampwidth(2)
+    w.setframerate(SR)
+    w.writeframes(interleaved.tobytes())
+
+print(f"[SUCCESS] 12.0s Foley audio exported: {out_wav} ({TOTAL_DURATION}s, 44.1kHz stereo)")
