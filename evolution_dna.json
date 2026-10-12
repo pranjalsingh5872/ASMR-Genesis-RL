@@ -1,0 +1,139 @@
+{
+  "generation": 4,
+  "total_evolutions": 3,
+  "last_evolved": "2026-10-12T11:43:28.834124",
+  "channel_stats": {
+    "cumulative_reward": 304.71,
+    "average_reward": 88.5,
+    "highest_reward": 95.4
+  },
+  "concept_weights": {
+    "organic_cloth_pressure_jelly": 2.0,
+    "kinetic_sand_slice": 1.562,
+    "chrome_mercury_fluid": 1.0,
+    "soft_body_jelly_impact": 1.2,
+    "glass_marbles_geometric_mold": 1.0,
+    "hydraulic_press_crunch": 1.0,
+    "infinite_looping_gears": 1.0
+  },
+  "physics_dna": {
+    "cloth_pressure": 2.7,
+    "target_volume": 1.0,
+    "use_pressure_volume": true,
+    "bending_stiffness": 0.04,
+    "tension_stiffness": 8.0,
+    "compression_stiffness": 8.0,
+    "shear_stiffness": 4.0,
+    "damping": 1.2,
+    "mass": 0.42,
+    "gn_jiggle_frequency": 7.5,
+    "gn_jiggle_amplitude": 0.008,
+    "collision_thickness": 0.005,
+    "collision_friction": 0.15
+  },
+  "material_dna": {
+    "actor_type": "24k_opaque_gold",
+    "actor_metallic": 1.0,
+    "actor_roughness": 0.04,
+    "actor_transmission": 0.0,
+    "marble_transmission": 0.0,
+    "marble_opacity": 1.0,
+    "glass_ior": 1.492
+  },
+  "pacing_dna": {
+    "speed_multiplier": 1.1,
+    "target_duration_sec": 5.0,
+    "motion_energy_target": 8.5,
+    "contrast_boost": 1.1,
+    "target_fps": 60
+  },
+  "audio_dna": {
+    "binaural_hz": 108.0,
+    "sample_rate": 44100,
+    "sync_tolerance_frames": 1
+  },
+  "hook_dna": {
+    "best_cta_style": "question",
+    "cta_templates": [
+      "100% Organic Cloth Pressure Jelly in 60 FPS \u2728 Which moment was most satisfying? \ud83d\udc47",
+      "Liquid 24K Gold on Italian Verde Alpi Marble \ud83c\udf3f Sound ON \ud83c\udfa7",
+      "Oddly satisfying 3D soft-body physics \u2728 Rate 1 to 10 \ud83d\udc47",
+      "Pure ASMR bliss \u2601\ufe0f Save this for later \ud83d\udccc"
+    ],
+    "active_cta_index": 0
+  },
+  "rl_state": {
+    "policy_version": "2.0-RL",
+    "baseline_reward": 82.0,
+    "last_reward": 91.5,
+    "reward_weights": {
+      "retention": 0.4,
+      "physics": 0.3,
+      "audio": 0.2,
+      "engagement": 0.1
+    }
+  },
+  "evolution_log": [
+    {
+      "generation": 1,
+      "timestamp": "2026-10-11T15:44:25.094300",
+      "video_id": "TEST_VID_01",
+      "theme": "kinetic_sand_slice",
+      "reward_score": 105.62,
+      "delta_vs_baseline": 30.62,
+      "mutations": [
+        "BOOST_THEME: Promoted 'kinetic_sand_slice' weight to 1.25",
+        "PRESERVE_CADENCE: Current speed 1.1x achieved 112.5% APV loop rate"
+      ]
+    },
+    {
+      "generation": 2,
+      "timestamp": "2026-10-11T15:45:27.213115",
+      "video_id": "DAILY_REEL",
+      "theme": "kinetic_sand_slice",
+      "reward_score": 103.69,
+      "delta_vs_baseline": 13.38,
+      "mutations": [
+        "BOOST_THEME: Promoted 'kinetic_sand_slice' weight to 1.562",
+        "PRESERVE_CADENCE: Current speed 1.1x achieved 108.2% APV loop rate"
+      ]
+    },
+    {
+      "generation": 3,
+      "timestamp": "2026-10-12T05:25:00.000000",
+      "video_id": "CLOTH_JELLY_60FPS_01",
+      "theme": "organic_cloth_pressure_jelly",
+      "reward_score": 95.4,
+      "delta_vs_baseline": 13.4,
+      "mutations": [
+        "BOOST_THEME: Promoted 'organic_cloth_pressure_jelly' weight to 2.0",
+        "ACTIVATE_PHYSICS: Upgraded to Cloth Pressure (P=2.5, Bending=0.05, 60 FPS)",
+        "ENFORCE_OPAQUE: Verde Alpi Marble and Gold transmission = 0.0"
+      ]
+    },
+    {
+      "generation": 4,
+      "timestamp": "2026-10-12T11:35:14.411446",
+      "video_id": "EPISODE_GEN_4",
+      "theme": "organic_cloth_pressure_jelly",
+      "reward_score": 80.22,
+      "delta_vs_baseline": -1.78,
+      "status": "DISCARDED",
+      "mutations": [
+        "POLICY_DISCARD: R_total=80.22 < Baseline=82.0 (Regression logged)"
+      ]
+    },
+    {
+      "generation": 4,
+      "timestamp": "2026-10-12T11:43:28.834118",
+      "video_id": "EPISODE_GEN_4",
+      "theme": "organic_cloth_pressure_jelly",
+      "reward_score": 80.22,
+      "delta_vs_baseline": -1.78,
+      "status": "DISCARDED",
+      "mutations": [
+        "POLICY_DISCARD: R_total=80.22 < Baseline=82.0 (Regression logged)"
+      ]
+    }
+  ]
+}

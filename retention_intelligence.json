@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-10-11T14:23:13.313985",
+  "history": [
+    {
+      "video_id": "QdS0QRh53RA",
+      "title": "Perfect Fit 3D Simulation \ud83e\udd2f | So Satisfying to Watch! #Shorts",
+      "recorded_at": "2026-10-11T14:23:13.313979",
+      "file_path": "output\\processed\\reel_QdS0QRh53RA.mp4",
+      "duration": 14.37,
+      "retention_score": 96.0,
+      "grade": "A+",
+      "metrics": {
+        "hook_score": 100.0,
+        "pacing_score": 100.0,
+        "clarity_score": 100.0,
+        "loop_score": 79.8
+      },
+      "performance_metrics": {
+        "views": 0,
+        "shares": 0,
+        "saves": 0,
+        "avg_percentage_viewed": 0.0
+      }
+    }
+  ],
+  "learned_patterns": {
+    "top_performing_topics": [],
+    "optimal_duration_seconds": 7.0,
+    "preferred_pacing_speed": 1.1,
+    "average_retention_score": 85.0
+  }
+}

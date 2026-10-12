@@ -1,0 +1,51 @@
+# ==========================================
+# Credentials & Sensitive Session Files
+# ==========================================
+.env
+*.env
+*.key
+ig_session.json
+*.session
+
+# ==========================================
+# Heavy Rendered Output & Frame Caches (>10GB)
+# ==========================================
+output/
+output/*
+frames/
+*.mp4
+*.blend1
+reel_Oz-5yMwy9mMTEMP_MPY_wvf_snd.mp4
+
+# ==========================================
+# External Unrelated Projects
+# ==========================================
+3D Creature Generator/
+
+# ==========================================
+# Python, Virtualenvs, & Cache
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# ==========================================
+# Agent & Tool Metadata Caches
+# ==========================================
+.agents/
+.ecc/
+
+# ==========================================
+# OS & System Files
+# ==========================================
+.DS_Store
+Thumbs.db
+Desktop.ini

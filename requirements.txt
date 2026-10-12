@@ -1,0 +1,23 @@
+# Core & Environment
+python-dotenv>=1.0.0
+requests>=2.31.0
+pydantic>=2.0.0
+
+# Scientific & Audio Processing
+numpy>=1.24.0
+scipy>=1.10.0
+
+# Computer Vision & Retention Auditor
+opencv-python>=4.8.0
+pillow>=10.2.0
+
+# Video Compilation & FFmpeg
+moviepy>=1.0.3
+imageio-ffmpeg>=0.4.9
+
+# Content Calendar & Scheduling
+pandas>=2.0.0
+openpyxl>=3.1.0
+
+# Instagram Automation
+instagrapi>=2.1.2
