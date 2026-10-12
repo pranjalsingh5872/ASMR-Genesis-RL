@@ -26,6 +26,11 @@ Replace procedural scaling shortcuts with real vertex-level physics:
 ### 4. 🚀 TARGET CHANNEL & DIRECT AUTO-UPLOAD
 - Automatically publish verified 60 FPS Reels directly to Instagram account `@asmrtransition_` using cached session tokens (`ig_session.json`) without external manual gating or Telegram bot confirmation.
 
+### 5. 🗑️ POST-UPLOAD ZERO-BLOAT DISK PURGE (AUTO-CLEANUP MANDATE)
+- Immediately upon successful upload to Instagram (confirmed via Media PK), the system **MUST automatically delete** the local `.mp4` video file and purge all associated heavy rendered frame directories (e.g., `output/cloth_jelly_*_frames/`) and intermediate audio files.
+- Zero local disk bloat: 60 FPS simulations generate 720+ high-res frames (~1GB/video). The RL daemon must operate continuously without exhausting local storage.
+- Lightweight verification receipts (`last_*_upload_result.json`) and preview thumbnails (`.jpg`) are preserved.
+
 ---
 
 ## 🔄 REINFORCEMENT LEARNING ARCHITECTURE (THE LIVING LOOP)
@@ -67,6 +72,7 @@ python -m automate --mode rl-daemon --engine blender --fps 60 --device optix --t
 ---
 
 ## 📜 Revision History
+- **2026-10-12 (v2.1):** Scaled duration to 10–15 seconds (720 frames / 12.0s multi-cloth cascade). Implemented Post-Upload Automatic Disk Purge Mandate (`auto_cleanup=True`) to automatically delete uploaded videos, rendered frame directories, and intermediate audio upon publication.
 - **2026-10-12 (v2.0):** Upgraded to **ASMR-Genesis-RL** Living Reinforcement Learning Architecture. Integrated 100% Opaque Material Mandate, Cloth Pressure Physics, 60 FPS standard, and Direct Auto-Publishing to `@asmrtransition_`.
 - **2026-10-12 (v1.2):** Switched to Direct Auto-Upload on new verified account `@asmrtransition_` (User ID `23957712592`).
 - **2026-10-11 (v1.0):** Established 60 FPS mandate and zero-upload-without-sound rule.

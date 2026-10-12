@@ -25,11 +25,16 @@ print(f"[*] Initializing Instagram Publisher for 60 FPS Cloth Jelly Reel...")
 print(f"[*] Target Video: {video_path}")
 print(f"[*] Thumbnail: {thumbnail_path}")
 
+frames_dir = os.path.abspath("output/cloth_jelly_60fps_frames")
+wav_path = os.path.abspath("output/rendered/cloth_jelly_60fps_foley.wav")
+
 publisher = InstagramPublisher()
 result = publisher.publish_reel(
     video_path=video_path,
     caption=caption,
-    thumbnail_path=thumbnail_path
+    thumbnail_path=thumbnail_path,
+    auto_cleanup=True,
+    associated_paths=[frames_dir, wav_path]
 )
 
 print("\n" + "="*50)

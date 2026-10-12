@@ -120,7 +120,17 @@ def execute_daily_upload(dry_run: bool = False):
 
     try:
         publisher = InstagramPublisher(username=username, password=password)
-        res = publisher.publish_reel(video_path=final_video, caption=caption)
+        associated_cleanup = []
+        frames_dir = os.path.abspath(f"output/frames_{vid_id}")
+        if os.path.exists(frames_dir):
+            associated_cleanup.append(frames_dir)
+
+        res = publisher.publish_reel(
+            video_path=final_video,
+            caption=caption,
+            auto_cleanup=True,
+            associated_paths=associated_cleanup
+        )
         post_id = res.get("pk", "PUBLISHED")
         ContentCalendar.update_row_status(
             video_id=vid_id,
@@ -142,6 +152,7 @@ def run_rl_daemon_episode(
     reward_metric: str = "retention_loop",
     auto_evolve: bool = True,
     auto_publish: bool = False,
+    auto_cleanup: bool = True,
     dry_run: bool = False
 ):
     """
@@ -220,10 +231,26 @@ Which moment felt the most satisfying? The initial drop or the pancake squish? ð
 #asmr #satisfying #oddlysatisfying #blender3d #cyclesrender #60fps #softbody #jelly #asmrcommunity #satisfyingvideos #3danimation #asmrsounds #gold"""
 
         publisher = InstagramPublisher()
+        associated_cleanup = []
+        frames_dir_12s = os.path.abspath("output/cloth_jelly_12s_60fps_frames")
+        frames_dir_5s = os.path.abspath("output/cloth_jelly_60fps_frames")
+        if os.path.exists(frames_dir_12s):
+            associated_cleanup.append(frames_dir_12s)
+        if os.path.exists(frames_dir_5s):
+            associated_cleanup.append(frames_dir_5s)
+        wav_12s = os.path.abspath("output/rendered/cloth_jelly_12s_60fps_foley.wav")
+        if os.path.exists(wav_12s):
+            associated_cleanup.append(wav_12s)
+        wav_5s = os.path.abspath("output/rendered/cloth_jelly_60fps_foley.wav")
+        if os.path.exists(wav_5s):
+            associated_cleanup.append(wav_5s)
+
         res = publisher.publish_reel(
             video_path=video_path,
             caption=caption,
-            thumbnail_path=cover_path
+            thumbnail_path=cover_path,
+            auto_cleanup=auto_cleanup,
+            associated_paths=associated_cleanup
         )
         print(f"[SUCCESS] Published to @{target_account}! Media PK: {res.get('pk')}")
         code = res.get('code')
@@ -247,6 +274,7 @@ if __name__ == "__main__":
     parser.add_argument("--reward-metric", type=str, default="retention_loop", help="Primary reward evaluation metric")
     parser.add_argument("--auto-evolve", action="store_true", help="Enable automatic RL policy evolution and mutation")
     parser.add_argument("--auto-publish", action="store_true", help="Enable direct automatic publishing upon verification")
+    parser.add_argument("--no-cleanup", dest="auto_cleanup", action="store_false", default=True, help="Preserve local video and frame caches after uploading (default: auto-cleanup enabled)")
 
     # Legacy & Auxiliary Arguments
     parser.add_argument("--scrape-week", action="store_true", help="Scrape viral trends and build 1-week Excel schedule")
@@ -268,6 +296,7 @@ if __name__ == "__main__":
             reward_metric=args.reward_metric,
             auto_evolve=args.auto_evolve,
             auto_publish=args.auto_publish,
+            auto_cleanup=args.auto_cleanup,
             dry_run=args.dry_run
         )
     elif args.scrape_week:

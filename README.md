@@ -15,6 +15,7 @@ An autonomous, self-evolving Reinforcement Learning agent and production pipelin
 4. **Action-Synchronized 3D Binaural Foley:** Frame-accurate Foley audio triggers (suction pop, glass glide, marble impact, gelatin squish, slime stretch, liquid slump) aligned within $\le 1$ frame tolerance.
 5. **Living Reinforcement Learning Closed Loop:** Computes composite reward $R_{\text{total}} = 0.40 R_{\text{retention}} + 0.30 R_{\text{physics}} + 0.20 R_{\text{audio}} + 0.10 R_{\text{engagement}}$, mutating physics and pacing policies over generations in `evolution_dna.json`.
 6. **Direct Instagram Auto-Publishing:** Publishes verified 60 FPS Reels directly to Instagram using cached sessions (`@asmrtransition_`).
+7. **Post-Upload Zero-Bloat Auto-Cleanup:** Automatically deletes local video files (`.mp4`), heavy intermediate rendered frame directories (`output/cloth_jelly_*_frames/`, 720+ high-res frames), and uncompressed Foley audio upon confirmed Instagram upload, preventing disk exhaustion during 24/7 continuous operation. (Pass `--no-cleanup` if local file preservation is desired).
 
 ---
 
@@ -85,9 +86,24 @@ python mix_cloth_jelly_audio.py
 python compile_cloth_jelly_reel.py
 ```
 
-### 4. Direct Video Quality & Retention Audit
+### 4. Render 12.0s (720 Frames / 60 FPS) Multi-Drop Cascade Scene
 ```bash
-python retention_auditor.py output/rendered/FINAL_60FPS_CLOTH_JELLY_ASMR.mp4
+# Render 720 frames (triple cloth jelly drop)
+& "C:\Program Files\Blender Foundation\Blender 5.2\blender.exe" -b -P render_cloth_jelly_12s_60fps.py
+
+# Synthesize 12-second multi-collision binaural Foley audio
+python mix_cloth_jelly_12s_audio.py
+
+# Compile 12s 60 FPS MP4 video
+python compile_cloth_jelly_12s_reel.py
+
+# Publish to Instagram with automatic post-upload disk purge
+python upload_cloth_jelly_12s_reel.py
+```
+
+### 5. Direct Video Quality & Retention Audit
+```bash
+python retention_auditor.py output/rendered/FINAL_12S_60FPS_CLOTH_JELLY_ASMR.mp4
 ```
 
 ---
@@ -95,20 +111,24 @@ python retention_auditor.py output/rendered/FINAL_60FPS_CLOTH_JELLY_ASMR.mp4
 ## 📂 Project Structure
 
 ```
-├── automate.py                  # Master CLI entrypoint & RL Daemon orchestrator
-├── blender_physics_sim.py       # Cloth Pressure, Collision, & 100% Opaque PBR materials
-├── render_cloth_jelly_60fps.py  # 60 FPS Cycles OptiX production render pipeline
-├── mix_cloth_jelly_audio.py     # 60 FPS action-synchronized binaural Foley sound mixer
-├── compile_cloth_jelly_reel.py  # FFmpeg 60 FPS H.264/AAC muxer and thumbnail extractor
-├── retention_auditor.py         # Computer-vision quality gate & composite RL reward auditor
-├── evolution_engine.py          # State/Action space mutation and policy gradient updater
-├── instagram_publisher.py       # Instagram session publisher with retry & challenge handling
-├── upload_cloth_jelly_reel.py   # One-click Reel publisher for target account
-├── evolution_dna.json           # Persistent RL state space, physics parameters, and logs
-├── CORE_MEMORY.md               # Immutable system directives and agent prompt specifications
-├── assets/                      # Curated 3D ASMR Foley audio recordings (WAV)
-├── requirements.txt             # Python dependencies
-└── .gitignore                   # Excludes credentials, session tokens, and heavy render files
+├── automate.py                      # Master CLI entrypoint & RL Daemon orchestrator
+├── blender_physics_sim.py           # Cloth Pressure, Collision, & 100% Opaque PBR materials
+├── render_cloth_jelly_12s_60fps.py  # 12.0s (720 frames / 60 FPS) Cycles OptiX render pipeline
+├── mix_cloth_jelly_12s_audio.py     # 12.0s 3D binaural Foley sound mixer (multi-drop sync)
+├── compile_cloth_jelly_12s_reel.py  # 12.0s FFmpeg 60 FPS muxer and cover extractor
+├── upload_cloth_jelly_12s_reel.py   # One-click 12s publisher with automatic disk cleanup
+├── render_cloth_jelly_60fps.py      # 5.0s (300 frames / 60 FPS) Cycles OptiX render pipeline
+├── mix_cloth_jelly_audio.py         # 5.0s action-synchronized Foley sound mixer
+├── compile_cloth_jelly_reel.py      # 5.0s FFmpeg 60 FPS muxer and cover extractor
+├── upload_cloth_jelly_reel.py       # One-click 5.0s publisher with automatic disk cleanup
+├── retention_auditor.py             # Computer-vision quality gate & composite RL reward auditor
+├── evolution_engine.py              # State/Action space mutation and policy gradient updater
+├── instagram_publisher.py           # Instagram session publisher with auto post-upload disk purge
+├── evolution_dna.json               # Persistent RL state space, physics parameters, and logs
+├── CORE_MEMORY.md                   # Immutable system directives and agent prompt specifications
+├── assets/                          # Curated 3D ASMR Foley audio recordings (WAV)
+├── requirements.txt                 # Python dependencies
+└── .gitignore                       # Excludes credentials, session tokens, and heavy render files
 ```
 
 ---
